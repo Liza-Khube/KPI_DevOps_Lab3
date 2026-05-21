@@ -1,0 +1,76 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [main]
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: mywebapp/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ./mywebapp
+        run: npm ci
+
+      - name: Lint ESLint
+        working-directory: ./mywebapp
+        run: npm run lint
+
+      - name: Lint Dockerfile
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: mywebapp/Dockerfile
+
+      - name: Install shellcheck
+        run: sudo apt-get install -y -qq shellcheck
+
+      - name: Lint shell-files
+        run: |
+          shellcheck setup.sh
+
+      - name: Lint JSON files
+        run: jq empty mywebapp/package.json
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: mywebapp/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: mywebapp
+
+      - name: Run tests with coverage
+        run: npm test
+        working-directory: mywebapp
+
+      - name: Upload coverage report
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: mywebapp/coverage/
+          retention-days: 14
