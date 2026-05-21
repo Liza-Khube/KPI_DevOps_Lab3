@@ -63,17 +63,17 @@ EOF
 
 echo "4 - Copying app and creating config file"
 echo "Copying app to $APP_DIR"
-mkdir -p $APP_DIR
-cp -r "$SCRIPT_DIR/mywebapp/." $APP_DIR
-cd $APP_DIR
+mkdir -p "$APP_DIR"
+cp -r "$SCRIPT_DIR/mywebapp/." "$APP_DIR"
+cd "$APP_DIR"
 echo "Installing project dependencies"
 npm install
 
-chown -R root:app $APP_DIR
-chmod -R 750 $APP_DIR
+chown -R root:app "$APP_DIR"
+chmod -R 750 "$APP_DIR"
 
 echo "Creating config file"
-mkdir -p $CONFIG_DIR
+mkdir -p "$CONFIG_DIR"
 cat > $CONFIG_DIR/config.json << EOF
 {
   "server": {
@@ -90,8 +90,8 @@ cat > $CONFIG_DIR/config.json << EOF
 }
 EOF
 
-chown root:app $CONFIG_DIR/config.json
-chmod 640 $CONFIG_DIR/config.json
+chown root:app "$CONFIG_DIR/config.json"
+chmod 640 "$CONFIG_DIR/config.json"
 
 echo "5 - Setting up systemd"
 cp "$SCRIPT_DIR/deploy/mywebapp.service" /etc/systemd/system/mywebapp.service
@@ -120,7 +120,7 @@ if [[ -n "$DEFAULT_USER" && \
       "$DEFAULT_USER" != "teacher" && \
       "$DEFAULT_USER" != "operator" && \
       "$DEFAULT_USER" != "app" ]]; then
-    usermod -L $DEFAULT_USER
+    usermod -L "$DEFAULT_USER"
     echo "User $DEFAULT_USER has been locked"
 fi
 
