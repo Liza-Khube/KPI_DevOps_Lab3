@@ -45,7 +45,8 @@ jobs:
 
       - name: Lint shell-files
         run: |
-          shellcheck setup.sh
+          shellcheck deploy/setup-runner.sh
+          shellcheck deploy/setup-target.sh
 
       - name: Lint JSON files
         run: jq empty mywebapp/package.json
