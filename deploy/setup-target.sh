@@ -14,7 +14,7 @@ fi
 
 GITHUB_REPO="${1:?Usage: $0 <github-repo> (e.g., user/mywebapp)}"
 
-read -p "Enter the PUBLIC KEY from the Runner node: " DEPLOY_PUBKEY
+read -r -p "Enter the PUBLIC KEY from the Runner node: " DEPLOY_PUBKEY
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DB_NAME="mywebapp_db"
