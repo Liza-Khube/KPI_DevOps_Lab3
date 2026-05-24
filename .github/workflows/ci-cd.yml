@@ -119,3 +119,33 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+  deploy:
+    name: Deploy to production
+    runs-on: [self-hosted, linux]
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/')
+    environment: production
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Make verification script executable
+        run: chmod +x ./deploy/verify.sh
+
+      - name: Deploy on target node
+        run: |
+          ssh -o StrictHostKeyChecking=no \
+              "operator@${{ secrets.TARGET_NODE_IP }}" "
+            set -e
+            docker pull ghcr.io/${{ github.repository }}:stable
+            sudo systemctl restart mywebapp-container.service
+            sudo systemctl status mywebapp-container.service --no-pager
+          "
+
+      - name: Wait for service to start
+        run: sleep 10
+
+      - name: Run verification
+        run: ./deploy/verify.sh "${{ secrets.TARGET_NODE_IP }}"
