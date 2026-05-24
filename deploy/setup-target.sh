@@ -12,7 +12,7 @@ if [ -z "$DB_PASSWORD" ]; then
   exit 1
 fi
 
-GITHUB_REPO="${1:?Usage: $0 <github-repo> (e.g., user/mywebapp)}"
+GITHUB_REPO="${1:?Usage: $0 <github-repo> (e.g., user/repo)}"
 
 read -r -p "Enter the PUBLIC KEY from the Runner node: " DEPLOY_PUBKEY
 
@@ -24,8 +24,9 @@ N=25
 
 echo "1 - Installing packages"
 apt update -qq
-apt install -y -qq nginx postgresql curl docker.io
+apt install -y -qq nginx postgresql curl docker.io openssh-server
 systemctl enable --now docker
+systemctl enable --now ssh
 
 echo "2 - Creating users"
 useradd -m -s /bin/bash student
@@ -44,7 +45,7 @@ else
     useradd -m -s /bin/bash operator
 fi
 echo "operator:12345678" | chpasswd
-chage -d 0 operator
+chage -M 99999 operator
 usermod -aG docker operator
 
 cat > /etc/sudoers.d/operator << 'EOF'
