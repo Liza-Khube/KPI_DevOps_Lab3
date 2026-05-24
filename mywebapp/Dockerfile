@@ -7,6 +7,8 @@ RUN npm ci --omit=dev
 
 COPY . .
 
+RUN chmod +x docker-entrypoint.sh
+
 ENV NODE_ENV=production
 ENV CONFIG_PATH=/etc/mywebapp/config.json
 
@@ -14,4 +16,4 @@ USER node
 
 EXPOSE 8080
 
-ENTRYPOINT ["docker-entrypoint.sh"]
+ENTRYPOINT ["./docker-entrypoint.sh"]
