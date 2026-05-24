@@ -91,11 +91,13 @@ cat > "$CONFIG_DIR/config.json" << EOF
 }
 EOF
 
-chmod 640 "$CONFIG_DIR/config.json"
-
 cat > "$CONFIG_DIR/container.env" << EOF
 MYWEBAPP_IMAGE=ghcr.io/${GITHUB_REPO}:stable
 EOF
+
+chmod 755 "$CONFIG_DIR"
+chmod 644 "$CONFIG_DIR/config.json"
+chmod 644 "$CONFIG_DIR/container.env"
 
 echo "5 - Setting up systemd & Nginx"
 cp "$SCRIPT_DIR/mywebapp-container.service" /etc/systemd/system/

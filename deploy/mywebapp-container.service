@@ -13,7 +13,7 @@ ExecStartPre=-/usr/bin/docker stop mywebapp
 ExecStartPre=-/usr/bin/docker rm mywebapp
 ExecStart=/usr/bin/docker run \
     --name mywebapp \
-    -p 127.0.0.1:8080:8080 \
+    --network host \
     -v /etc/mywebapp/config.json:/etc/mywebapp/config.json:ro \
     -e CONFIG_PATH=/etc/mywebapp/config.json \
     ${MYWEBAPP_IMAGE}
