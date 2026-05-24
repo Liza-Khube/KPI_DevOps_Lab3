@@ -18,15 +18,13 @@ if ! id -u "$RUNNER_USER" >/dev/null 2>&1; then
   useradd -m -s /bin/bash "$RUNNER_USER"
 fi
 
-usermod -aG docker "$RUNNER_USER"
-
 RUNNER_DIR="/home/${RUNNER_USER}/actions-runner"
 
 echo "1 - Installing dependencies"
 apt update -qq
 apt install -y -qq curl docker.io jq git openssh-client
-
 systemctl enable --now docker
+usermod -aG docker "$RUNNER_USER"
 
 echo "2 - Downloading GitHub Actions runner"
 LATEST_VERSION=$(curl -s https://api.github.com/repos/actions/runner/releases/latest | jq -r .tag_name | sed 's/v//')
@@ -54,5 +52,5 @@ echo "--------------------------------------"
 echo "2. Next steps:"
 echo "   - Switch to user: su - $RUNNER_USER"
 echo "   - Go to runner dir: cd $RUNNER_DIR"
-echo "   - Configure: ./config.sh --url https://github.com/Liza-Khube/KPI_DevOps_Lab3 --token <TOKEN>"
+echo "   - Configure: ./config.sh --url https://github.com/<OWNER>/<REPO> --token <TOKEN>"
 echo "   - Install service: sudo ./svc.sh install && sudo ./svc.sh start"
