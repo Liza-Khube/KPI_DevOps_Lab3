@@ -14,4 +14,4 @@ USER node
 
 EXPOSE 8080
 
-CMD ["sh", "-c", "node migration.js && node server.js"]
+ENTRYPOINT ["docker-entrypoint.sh"]
