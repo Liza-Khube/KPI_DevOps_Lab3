@@ -13,6 +13,7 @@ if [ -z "$DB_PASSWORD" ]; then
 fi
 
 GITHUB_REPO="${1:?Usage: $0 <github-repo> (e.g., user/repo)}"
+GITHUB_REPO="${GITHUB_REPO,,}"
 
 read -r -p "Enter the PUBLIC KEY from the Runner node: " DEPLOY_PUBKEY
 
@@ -50,13 +51,15 @@ usermod -aG docker operator
 
 cat > /etc/sudoers.d/operator << 'EOF'
 operator ALL=(ALL) NOPASSWD: \
-  /bin/systemctl daemon-reload, \
-  /bin/systemctl restart mywebapp-container.service, \
-  /bin/systemctl start mywebapp-container.service, \
-  /bin/systemctl stop mywebapp-container.service, \
-  /bin/systemctl status mywebapp-container.service, \
-  /bin/systemctl reload nginx
+  /usr/bin/systemctl daemon-reload, \
+  /usr/bin/systemctl restart mywebapp-container.service, \
+  /usr/bin/systemctl start mywebapp-container.service, \
+  /usr/bin/systemctl stop mywebapp-container.service, \
+  /usr/bin/systemctl status mywebapp-container.service --no-pager, \
+  /usr/bin/systemctl reload nginx
 EOF
+
+chmod 0440 /etc/sudoers.d/operator
 
 mkdir -p /home/operator/.ssh
 echo "$DEPLOY_PUBKEY" >> /home/operator/.ssh/authorized_keys
