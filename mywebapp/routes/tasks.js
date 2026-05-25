@@ -25,7 +25,8 @@ router.get('/', async (req, res) => {
     );
 
     if (acceptFormat === 'html') {
-      let html = '<html><body><h1>Tasks</h1>';
+      let html = '<html><body>';
+      html += '<h1>Tasks</h1>';
       html +=
         '<table border="1"><tr><th>ID</th><th>Title</th><th>Status</th><th>Created At</th></tr>';
 
@@ -36,7 +37,8 @@ router.get('/', async (req, res) => {
         )
         .join('');
 
-      html += '</table></body></html>';
+      html += '</table>';
+      html += '</body></html>';
       return res.status(200).send(html);
     }
     return res.status(200).json(rows);
