@@ -15,7 +15,7 @@ fi
 GITHUB_REPO="${1:?Usage: $0 <github-repo> (e.g., user/repo)}"
 GITHUB_REPO="${GITHUB_REPO,,}"
 
-read -r -p "Enter the PUBLIC KEY from the Runner node: " DEPLOY_PUBKEY
+read -p "Enter the PUBLIC KEY from the Runner node: " DEPLOY_PUBKEY
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DB_NAME="mywebapp_db"
@@ -110,7 +110,7 @@ rm -f /etc/nginx/sites-enabled/default
 systemctl restart nginx
 
 echo "6 - Creating gradebook"
-echo "$N" > /home/student/gradebook
+echo "$N" >>> /home/student/gradebook
 chown student:student /home/student/gradebook
 
 echo "Setup complete"
