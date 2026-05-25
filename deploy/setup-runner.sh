@@ -35,6 +35,7 @@ mkdir -p "$RUNNER_DIR"
 cd "$RUNNER_DIR"
 curl -fsSL "https://github.com/actions/runner/releases/download/v${LATEST_VERSION}/${RUNNER_PACKAGE}" -o "$RUNNER_PACKAGE"
 tar xzf "$RUNNER_PACKAGE"
+sudo ./bin/installdependencies.sh
 rm "$RUNNER_PACKAGE"
 chown -R "${RUNNER_USER}:${RUNNER_USER}" "$RUNNER_DIR"
 
