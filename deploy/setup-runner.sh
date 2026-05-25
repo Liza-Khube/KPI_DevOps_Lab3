@@ -6,7 +6,7 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
-RUNNER_USER="${1:?Usage: $0 <username> (e.g., ubuntu or student)}"
+RUNNER_USER="${1:?Usage: $0 <username> (e.g., admin)}"
 
 if [ "$RUNNER_USER" = "root" ]; then
   echo "Error: GitHub Runner cannot be run as root. Please specify a regular user."
