@@ -1,13 +1,13 @@
 # Лабораторна робота №3. CI/CD. Setup Guide
 
-##### Для виконання роботи використовувалось:
+### Для виконання роботи використовувалось:
 
 - Runner VM - Ubuntu Server 24.04 ([https://ubuntu.com/download/server](https://ubuntu.com/download/server))
 - Target Node VM - Ubuntu Server 24.04 ([https://ubuntu.com/download/server](https://ubuntu.com/download/server))
 
-##### Після форку репозиторія:
+### Після форку репозиторія:
 
-##### На Runner VM:
+### На Runner VM:
 
 1. Склонувати репозиторій:
 
@@ -25,7 +25,7 @@
 
    Скрипт виведе публічний SSH ключ - його треба скопіювати/зберегти. Цей ключ буде вставлятись при запиті `setup-target.s`
 
-##### На Target Node VM
+### На Target Node VM
 
 4. Склонувати репозиторій:
 
@@ -43,7 +43,7 @@
 
    Скрипт запитає публічний SSH ключ з Runner VM - вставити те, що вивів `setup-runner.sh` (п. 3)
 
-##### На Runner VM:
+### На Runner VM:
 
 7. Перейти на профіль користувача `<username>`, що був переданий при запуску `setup-runner.sh` (п. 3):
 
@@ -63,7 +63,7 @@
 
     `sudo ./svc.sh install && sudo ./svc.sh start`
 
-##### GitHub Secrets
+### GitHub Secrets
 
 Для CI/CD pipline потрібна одна змінна, яку треба записати у GitHub Secrets:
 
